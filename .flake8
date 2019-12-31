@@ -1,0 +1,8 @@
+[flake8]
+# Ignore the following rules because we disagree with them, or at least
+# disagree with enforcing them religiously with no programmer discretion:
+# E501 - max line length
+# E701 - no single-line compound statements
+extend-ignore = E501,E701
+
+exclude = .git,__pycache__
