@@ -59,16 +59,15 @@ def compute_checksum(message: Iterable) -> str:
     return hex(checksum_value)[-2:]
 
 
-def compose_command(command: str, arg: int = None) -> List[str]:
+def compose_command(command: str, arg: int = None) -> str:
     """
     This method is used for creating a proper 10 byte command. It computes
     the checksum, adds a start and end byte, and returns a list of 1 character
     strings that make up a properly formatted command message that can be sent
     via serial to the TC-720 controller.
     """
-    message = []
-    message.append(START_BYTE)
-    message.extend(command)
+    message = START_BYTE
+    message += command
     hex_string = ''
     if arg is not None:
         if arg < 0:
@@ -76,10 +75,9 @@ def compose_command(command: str, arg: int = None) -> List[str]:
         hex_string = hex(arg)[2:]
     # Ensure hex string is exactly four characters
     hex_string = '0'*(4 - len(hex_string)) + hex_string
-    message.extend(hex_string)
-    checksum = compute_checksum(message[1:])
-    message.extend(checksum)
-    message.append(END_BYTE)
+    message += hex_string
+    message += compute_checksum(message[1:])
+    message += END_BYTE
     return message
 
 
