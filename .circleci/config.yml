@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.2-jessie
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: sudo -E .circleci/install-deps.sh
+      - run:
+          name: Lint code with flake8
+          command: 'make flake8'
+      - run:
+          name: Check types in Python code with mypy
+          command: 'make mypy'
